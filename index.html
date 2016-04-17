@@ -1,0 +1,273 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 TRANSITIONAL//EN">
+<html>
+<head>
+    <title>上海抚顺同学会抽奖系统</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style type="text/css">
+        td {
+            border-bottom: 1px solid #ccc;
+            font-size: 16px;
+            line-height: 22px;
+        }
+
+        .randomShow {
+            height: 30px;
+            width: 200px;
+            border: 1px solid red;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+<div id="main" style="text-align: center;margin-top: 40px;">
+    <audio id="runningMic" class="hide" loop>
+        <source src="music\running.wav">
+    </audio>
+    <audio id="stopMic" class="hide">
+        <source src="music\stop.mp3">
+    </audio>
+    <div>
+        <h1>中奖号码</h1>
+
+        <table width="946" height="79" border="0" style="margin: auto;">
+            <tr>
+                <td><input name="text36" type="text" id="result_1"
+                         class="randomShow"  size="20" readonly/>
+                </td>
+                <td><input name="text37" type="text" id="result_2"
+                           class="randomShow"  size="20" readonly/>
+                </td>
+                <td><input name="text38" type="text" id="result_3"
+                           class="randomShow"   size="20" readonly/>
+                </td>
+                <td><input name="text39" type="text" id="result_4"
+                           class="randomShow"   size="20" readonly/>
+                </td>
+                <td><input name="text40" type="text" id="result_5"
+                           class="randomShow" size="20" readonly/>
+                </td>
+            </tr>
+            <tr>
+                <td><input name="text41" type="text" id="result_6"
+                           class="randomShow"   size="28" readonly/>
+                </td>
+                <td><input name="text42" type="text" id="result_7"
+                           class="randomShow"  size="20" readonly/>
+                </td>
+                <td><input name="text43" type="text" id="result_8"
+                           class="randomShow"  size="20" readonly/>
+                </td>
+                <td><input name="text44" type="text" id="result_9"
+                           class="randomShow" size="20" readonly/>
+                </td>
+                <td><input name="text45" type="text" id="result_10"
+                           class="randomShow" size="20" readonly/></td>
+            </tr>
+        </table>
+
+        <p style="margin: 30px 0px">
+            <input id="start" type="button" value="开始"
+                   style="border: 1px solid; border-color: #aaa;width:4em; background: #FCDCE5;width: 200px;height: 50px;font-size: 25px;border-radius: 10px;"
+                   onclick="start()"/>
+            <input id="end" type="button" value="停"
+                   style="border: 1px solid; border-color: #aaa;width:4em; background: #FCDCE5;width: 200px;height: 50px;font-size: 25px;border-radius: 10px;"
+                   onclick="stop()" disabled/>
+        </p>
+
+        <div id="cusList">
+        </div>
+
+        <p style="margin-top: 50px;font-size: 25px">参会者名单:</p>
+
+        <div id="nameList" style="margin: auto;width: 900px;margin-top: 30px;text-align: left;"></div>
+    </div>
+</div>
+</body>
+<script language="javascript">
+
+    var timer;
+    var randnumOrders = new Array;
+    var prizeOrders = new Array;
+
+    var names = "1.孙晓林，2.张伟，3.刘迪，4.马宝国，5.黄承光，6.赵晓宇，7.刘彬，8.刘大明，9.赵肃武，10.王众，11.赵晓东，12.费翔，13.赵震宇，14.杨垒，15.周相韡，16.杨丽君，17.邹楠，18.周少辉，19.王丛笑，20.吕东亮，21.康敏，22.李毅，23.龙灏，24.关键， 25.夏志鹏，26.李志凌， 27.王敬禹， 28.张迎利， 29.杨淼， 30.王朝辉，31.王颖，32.杨人懿，33.施琦， 34.栾亦木，35.吴跃迪，36.赵巍，37.徐航，38.赵鹏，39.俞洋，40.刘波，41.王竹萍，42.任鹏，44.张弛，45.焦健，46.王洋，47.牛春晓，48.江添羊，49.潘望，50.兰健，51.王淼，52.李丹，53.蒋宾，54.袁中华，55.唐书缘，56.曲云鹏，57.蔡琼，58.姚庆，59.张明栋，60.张潇予，61.袁庆鹏，62.黄承国，63.崔华天，64.顾永红，65.尹天阔，66.张守政，67.王瑛，68.洪跃忠，69.王景红，70.赵锦程，71.耿丹曦，72.霍喆，73.姜建军，74.曹飞，75.张钢，76.王玫，77.韩超，78.金国东，79.宋雨晨，80.李红，81.姜蕾，82.徐鹏霏，83.黄旭，84.殷健，85.石宏程，86.刘煊，87.张学奎 ，88.孙彦，89.黄浩呈，91.楚靖，92.徐万成，93.宋屹，94.孙大亮，95.田哲，96.魏佳,97.吕松，98.裴佳音，99.徐堃，100.宋萍，101.王攀，102.余欣佳，103.张大川，104.王传毅，105.贾淼，106.李斯，107.和国珍，108.赵鑫，109.郑雨桐，110.赵偲琦，111.王璐，112.刘正罡，113.王国庆，114.王乐，115.王晓辉，116.朱峰，117.郭为，118.秦承启,119.关歆，120.费璐竤，121.杨文斌，122.周凌羽，123.张欣,124.李爽，125.王景彦，126.王剑，127.何柯，128.奚巍，129.金丹，130.张小鹏，131.杨志玲，132.黄琴，133.蔡博，134.刘哲，135.姜立新，136.李艳欣，137.杨恩嘉，138.张毅，139.李昊洋，140.季艳玲，141.李赫宇，142.王冰清，143.马丹鼓，144.赵唯辰，145.吴思畏，146.张文若，147.王文逸，148.刘俊，149.程欣禹，150.佟欣阳，151.李斌，152.程维，153.鹿塽，154.任铭，155.黄承欣,156.刘佳,157.霍飞龙, 158.杨心怡，159.李璧合,160.闫宁,161.孙艳侠，162.张宏,163.郭正科,164.安建军,165.张金虹,166.焦会敏,167.严  瑾,168.程志强,169.李  林,170.周之淳,171.谢振红,172.赵迎红,173.梁  冰,174.金 军,175.蒋   辉,176.侯建仁,177.艾   芳,178.李  倩,179.刘   霞,180.王善力,181.王   勇,182.王洪杰,183.季海龙,184.郭   宇,185.张   骞,186.刘丽娟,187.胡云生,188.王   钢,189.赵   洋,190.刘长俊,191.苏   航,192.王菡,200.陆正华,201.唐杰，202.李欣芮，203.李新颖，204.李运强，205.钱  锋，206.皇甫小桥，207.王   文，208.徐    晨，209.廖云达，210.王灵均，211.李   科，212.王琳琳,213.郑煜康，214.张浩,215.聂菁菁,216.李   旭,217.袁   伟,218.于革,219.关斯丹,220.郝恩泽,221.彭北飞,222.李是澎,223.国   石,224.张  京,225.孙永嘉,226.关思萌,227.邵雪倩,228.郝文静,229.杨心怡,230.佟   妍,231.姚   雪,232.方歆宇,233.赵龙,234.杨翘楚,235.寇思,236.李馥君,301.王振东,302.吴中朝,303.刘戟,304.丛安,305.王英文,306.解宝秋,307.夏禹,308.李文涛,309.赵晓峰,310.韩林,311.刘东,312.肖健,313.尹斌,314.刘帅,315.刘爱东,316.刘爱东,317.刘爱东,318.田卢峰,319.嘉宾,320.嘉宾,321.嘉宾,322.嘉宾,323.嘉宾,324.徐老师"
+    var mobile = names.split(/\s*[,，]\s*/g);
+
+    var prizeList = [];
+    var cash = [];
+    var prizeNum = [
+        {name: "misis丝巾", num: 8},
+        {name: "眼部按摩器", num: 30},
+        {name: "蔬菜单次卡", num: 30},
+        {name: "漱口水", num: 36},
+        {name: "汽车保养劵", num: 3},
+        {name: "智能牙刷", num: 10},
+        {name: "空气净化器", num: 2},
+        {name: "特产黑木耳", num: 20},
+        {name: "保温杯", num: 15},
+        {name: "农庄充值卡", num: 30}
+    ];
+
+
+    for (var i in prizeNum) {
+        cash = [];
+        for (var ii = 0; ii < prizeNum[i].num; ii++) {
+            cash[ii] = prizeNum[i].name;
+        }
+        prizeList = prizeList.concat(cash);
+    }
+
+
+    var DOMOperate = (function(){
+        var num = 1;
+        return{
+            "setValues": function (n) {
+                document.getElementById(num).innerText = document.getElementById("result_" + n).value;
+                num++;
+            },
+            "setHistoryValues": function (str) {
+                document.getElementById(num).innerText = str;
+                num++;
+            }
+        }
+    })()
+
+    var runningMic = document.getElementById("runningMic");
+    var stopMic = document.getElementById("stopMic");
+
+    function start() {
+
+        timer = setInterval("getRandNum();", 10);
+
+        document.getElementById("start").disabled = true;
+        document.getElementById("end").disabled = false;
+        try {
+            if (runningMic != null) {
+                runningMic.play();
+            }
+        }
+        catch (anError) {
+            console.log("timer error!", Date.now());
+        }
+    }
+
+    function stop() {
+
+        clearInterval(timer);
+
+        for (var i = 1; i < 11; i++) {
+            if (prizeList.length > 0) {
+                var randnum = GetRnd(0, mobile.length - 1);
+                randnumOrders.push(randnum);
+
+                var randnum2 = GetRnd(0, prizeList.length - 1);
+                prizeOrders.push(randnum2);
+
+                document.getElementById("result_" + i).value = mobile[randnum] + "--" + prizeList[randnum2];
+
+                mobile.removeEleAt(randnum);
+                prizeList.removeEleAt(randnum2);
+                var o = 0;
+                for (p = 0; p < mobile.length; p++) {
+                    if (typeof mobile[p] != "undefined") {
+                        mobile[o] = mobile[p];
+                        o++;
+                    }
+                }
+            } else {
+                document.getElementById("result_" + i).value = "奖品已抽完";
+            }
+
+
+        }
+        localStorage['randnumOrders'] = JSON.stringify(randnumOrders);
+        localStorage['prizeOrders'] = JSON.stringify(prizeOrders);
+
+
+        document.getElementById("start").disabled = false;
+        document.getElementById("end").disabled = true;
+        try {
+            if ((runningMic != null) && (stopMic != null)) {
+                runningMic.pause();
+                stopMic.play();
+            }
+        }
+        catch (anError) {
+            console.log("timer error!", Date.now());
+        }
+        for (var i = 1; i < 11; i++) {
+            DOMOperate.setValues(i);
+        }
+    }
+
+    function getRandNum() {
+        for (var i = 1; i < 11; i++) {
+            document.getElementById("result_" + i).value = mobile[GetRnd(0, mobile.length - 1)];
+        }
+
+    }
+    function GetRnd(min, max) {
+
+        var randnum = parseInt(Math.random() * (max - min + 1));
+        return randnum;
+    }
+    Array.prototype.removeEleAt = function (dx) {
+        if (isNaN(dx) || dx > this.length) {
+            return false;
+        }
+        this.splice(dx, 1);
+    }
+
+
+</script>
+<script>
+    var htmlName = "";
+    for (var i = 0; i < mobile.length; i++) {
+        htmlName += "<span style = \"width:20%;display: inline-block;line-height: 20px\">" + mobile[i] + "</span>";
+    }
+    document.getElementById("nameList").innerHTML = htmlName;
+
+    function addHtml(n) {
+        for (var m = 0; m < n; m++) {
+            html += '<tr>'
+            var ii = i;
+            for (; i < ii + 5; i++) {
+                html += '<td id="' + i + '"></td>'
+            }
+            html += '</tr>'
+            html += '<tr>'
+            for (; i < ii + 10; i++) {
+                html += '<td id="' + i + '"></td>'
+            }
+            html += '</tr>'
+        }
+    }
+
+    var i = 1;
+    var html = '';
+    html += '<p><strong>第一轮中奖名单(60人)</strong></p>'
+    html += '<table width="1200" height="30px" border="0" style="margin: auto;">'
+    addHtml(6);
+    html += '</table>'
+    html += '<p><strong>第二轮中奖名单(60人)</strong></p>'
+    html += '<table width="1200" height="30px" border="0" style="margin: auto;">'
+    addHtml(6);
+    html += '</table>'
+    html += '<p><strong>第三轮中奖名单(69人)</strong></p>'
+    html += '<table width="1200" height="30px" border="0" style="margin: auto;">'
+    addHtml(7);
+    html += '</table>'
+    document.getElementById("cusList").innerHTML = html;
+
+    if (localStorage['randnumOrders'] && localStorage['prizeOrders']) {
+        randnumOrders = JSON.parse(localStorage['randnumOrders']);
+        prizeOrders = JSON.parse(localStorage['prizeOrders']);
+
+        for (var i = 0; i < randnumOrders.length; i++) {
+            DOMOperate.setHistoryValues(mobile[randnumOrders[i]] + "--" + prizeList[prizeOrders[i]]);
+
+            mobile.removeEleAt(randnumOrders[i]);
+            prizeList.removeEleAt(prizeOrders[i]);
+        }
+    }
+</script>
+</html>
